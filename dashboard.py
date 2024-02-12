@@ -240,9 +240,9 @@ def reviews_order(df_data_reviews):
 
 
 #File CSV yang dibutuhkan
-df_data_produk = pd.read_csv('products_dataset.csv')
-df_data_order = pd.read_csv('orders_dataset.csv')
-df_data_reviews = pd.read_csv('order_reviews_dataset.csv')
+df_data_produk = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/products_dataset.csv")
+df_data_order = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/orders_dataset.csv")
+df_data_reviews = load_data('https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/order_reviews_dataset.csv')
 
 #Pemanggilan
 with st.sidebar :
