@@ -361,6 +361,82 @@ def banyak_transaksi(df_transaksi) :
         """
     )          
     
+#Pengerjaan Efelien Anindya
+def metode_payment(df_data_payments):
+    #Cek apakah ada missing value atau tidak
+    missing_values = df_data_payments.isnull().values.any()
+    df_data_payments.isnull().sum()
+
+    #Cek apakah ada data duplikat atau tidak
+    df_data_payments_duplicate = df_data_payments.duplicated().values.any()
+
+    st.title("Analisis Metode Transaksi yang Digunakan Konsumen Serta Pendistribusian Value Transaksi")
+
+    #Mengetahui jumlah transaksi dari setiap metode pembayaran yang berbeda
+    st.subheader("Tabel Metode Transaksi")
+    payment_type_counts = df_data_payments['payment_type'].value_counts().reset_index()
+    payment_type_counts = payment_type_counts.rename(columns={'payment_type': 'Metode Transaksi','count' : 'Jumlah Transaksi'})
+    st.dataframe(payment_type_counts)
+
+    #Mengetahui jumlah transaksi yang telah dilakukan
+    totalTipePayment = df_data_payments['payment_type'] 
+    st.write("Total transaksi yang telah dilakukan adalah sebanyak ", len(totalTipePayment))
+
+    st.write('<hr>', unsafe_allow_html=True)
+
+    #Menampilkan line chart 
+    st.subheader("Grafik Metode Transaksi")
+    st.line_chart(payment_type_counts.set_index('Metode Transaksi'))
+    with st.expander("Lihat Penjelasan") :
+        st.write(
+            """
+                Berdasarkan Line Chart di atas dapat diambil kesimpulan bahwa metode transaksi yang paling banyak digunakan oleh konsumen adalah credit card dengan jumlah 76.795 transaksi.
+            """
+        )
+
+    st.write('<hr>', unsafe_allow_html=True)
+    
+    #Mengetahui pendistribusian besar tiap transaksi 
+    st.subheader('Pendistibusian Value Transaksi')
+    st.write('Untuk mengetahui berapa banyak saldo transaksi yang dikeluarkan konsumen maka akan dilakukan pendistribusian value transaksi.')
+    def assign_color(value):
+        if value < 100:
+            return 'yellow'
+        elif 100 <= value < 500:
+            return 'green'
+        elif 500 <= value < 1000:
+            return 'blue'
+        elif 1000 <= value < 5000:
+            return 'purple'
+        elif 5000 <= value < 10000:
+            return 'lightgreen'
+        else:
+            return 'red'
+    
+    colors = df_data_payments['payment_value'].apply(assign_color)
+
+    st.subheader("Scatter Plot Distribusi Value Transaksi")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.scatter(df_data_payments.index, df_data_payments['payment_value'], alpha=0.5, c=colors)
+    ax.set_title('Scatter Plot Distribusi Value Transaksi')
+    ax.set_xlabel('Indeks Data Transaksi')
+    ax.set_ylabel('Value Transaksi')
+    ax.grid(True, linestyle='--', alpha=0.7)
+    st.pyplot(fig)
+    
+    with st.expander("Lihat Penjelasan") :
+        st.write(
+            """
+                Berdasarkan Scatter Plot di atas dapat diambil kesimpulan bahwa konsumen paling banyak melakukan transaksi sampai range sebesar 4000.
+            """
+        )
+    
+    st.write('<hr>', unsafe_allow_html=True)
+
+    #Kesimpulan
+    st.subheader('Conclusion')
+    st.write('Dapat disimpulkan bahwa metode transaksi yang paling banyak digunakan yaitu credit card dengan jumlah 76.795 transaksi. Lalu dengan dilakukan pendistribusian value transaksi bisa diketahui bahwa sebagian besar konsumen melakukan transaksi sampai range sebesar 4000. Hal ini dapat membantu sebuah perusahaan dalam menyediakan beberapa jenis credit card untuk transaksi, dan juga setelah mengetahui pendistribusian value transaksi perusahaan bisa meningkatkan value transaksi seperti mengadakan voucher dengan minimum pembayaran.')
+    
 
 #File CSV yang dibutuhkan
 df_data_produk = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/products_dataset.csv")
@@ -368,7 +444,7 @@ df_data_order = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_M
 df_data_reviews = load_data('https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/order_reviews_dataset.csv')
 df_seller = load_data('https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/sellers_dataset.csv')
 df_transaksi = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/customers_dataset.csv")
-
+df_data_payments = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/order_payments_dataset.csv")
 
 #Tampilan
 with st.sidebar :
@@ -379,7 +455,7 @@ with st.sidebar :
     
 if (selected == 'Dashboard') :
     st.header(f"Dashboard Analisis E-Commerce")
-    tab1,tab2,tab3,tab4,tab5 = st.tabs(["Pengkategorian Berat Produk", "Analisis Waktu Pengriman", "Analisis Rating Konsumen","Analisis Pendistribusian Berdasarkan Kota","Analisis Banyaknya Transaksi"])
+    tab1,tab2,tab3,tab4,tab5,tab6 = st.tabs(["Pengkategorian Berat Produk", "Analisis Waktu Pengiriman", "Analisis Rating Konsumen","Analisis Pendistribusian Berdasarkan Kota","Analisis Banyaknya Transaksi","Analisis Metode Transaksi"])
 
     with tab1 :
         analisis_berat_produk(df_data_produk)
@@ -391,6 +467,8 @@ if (selected == 'Dashboard') :
         distribusi_produk(df_seller)
     with tab5 :
         banyak_transaksi(df_transaksi)
+    with tab6 :
+        metode_payment(df_data_payments)
 
 
 else :
@@ -426,6 +504,12 @@ else :
         st.write("NAMA   : M Rijal Fadilah")
         st.write("KELAS  : IF-7")
         st.write("BAGIAN PENGERJAAN : Analisis Banyak Transaksi")
+
+        st.write('<hr>', unsafe_allow_html=True)
+        st.write("NIM    : 10122249")
+        st.write("NAMA   : Efelien Anindya Shifani")
+        st.write("KELAS  : IF-7")
+        st.write("BAGIAN PENGERJAAN : Analisis Metode Transaksi")
 
         st.write('<hr>', unsafe_allow_html=True)
         st.caption("UAS Pemrograman Dasar Sains Data")
