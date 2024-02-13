@@ -41,8 +41,8 @@ def analisis_berat_produk(df_data_produk) :
 
     #Menjelaskan Pengkategorian Berat barang
     st.write("""Akan dilakukan pengkategorian berat barang untuk melihat produk dengan rentang berat berapa yang memiliki jumlah terbanyak.
-             Berat produk akan dibagi menjadi 3 Kategori Yaitu :\n 1. Kategori 'Ringan' dengan rentang berat 500g - 1Kg.
-             \n2. Kategori 'Sedang' dengan rentang berat 1Kg - 5Kg.\n 3. Kategori 'Berat' dengan rentang berat > 5Kg""")
+            Berat produk akan dibagi menjadi 3 Kategori Yaitu :\n 1. Kategori 'Ringan' dengan rentang berat 500g - 1Kg.
+            \n2. Kategori 'Sedang' dengan rentang berat 1Kg - 5Kg.\n 3. Kategori 'Berat' dengan rentang berat > 5Kg""")
     
     st.write('<hr>', unsafe_allow_html=True)
 
@@ -63,7 +63,7 @@ def analisis_berat_produk(df_data_produk) :
 
     fig, ax = plt.subplots()
     ax.bar(label, data, color=['green' if kategori == 'Ringan' else 
-          'blue' if kategori == 'Sedang' else 'red' for kategori in label])
+        'blue' if kategori == 'Sedang' else 'red' for kategori in label])
     ax.set_xlabel('Kategori')
     ax.set_ylabel('Jumlah')
 
@@ -77,8 +77,8 @@ def analisis_berat_produk(df_data_produk) :
     #Expander Grafik
     with st.expander("Penjelasan Grafik Berat Produk") :
         st.write("""Dari Grafik diatas, dapat dilihat bahwa produk dengan kategori berat 'Sedang' memiliki jumlah terbanyak yaitu sebanyak
-                 9203 produk, disusul oleh produk dengan kategori 'Ringan' sebanyak 7085 produk, dan yang paling sedikit adalah produk
-                 dengan kategori 'berat' dengan jumlah 4197 produk. Kita dapat pula melihat berapa perbandingan persentase tiap kategori melalui diagram pie. """) 
+                9203 produk, disusul oleh produk dengan kategori 'Ringan' sebanyak 7085 produk, dan yang paling sedikit adalah produk
+                dengan kategori 'berat' dengan jumlah 4197 produk. Kita dapat pula melihat berapa perbandingan persentase tiap kategori melalui diagram pie. """) 
 
 
     st.write('<hr>', unsafe_allow_html=True)
@@ -98,12 +98,12 @@ def analisis_berat_produk(df_data_produk) :
 
     with st.expander("Penjelasan Pie Perbandingan Berat produk") :
         st.write("""Dari pie diatas, dapat dilihat bahwa produk kategori 'Sedang' memiliki persentase terbesar yaitu sebanyak 44.9% (9203 produk),
-                 disusul dengan kategori 'Ringan' sebanyak 34.6% (7085 produk), dan kategori 'Berat' sebanyak 20.5% (4197 produk).""")
+                disusul dengan kategori 'Ringan' sebanyak 34.6% (7085 produk), dan kategori 'Berat' sebanyak 20.5% (4197 produk).""")
         
     st.write("""Analisis ini dapat berguna bagi perusahaan apabila misalnya suatu perusahaan ingin membagi-bagi produk ke dalam beberapa kategori yang 
-             diambil berdasarkan berat produknya. Hal ini bisa dijadikan pertimbangan pengambilan keputusan oleh sebuah perusahaan, misalnya kendaraan apa yang
-             harus banyak dimiliki perusahaan untuk pengantaran paket produk, penambahan fitur klasifikasi berat produk di aplikasi e-commerce, 
-             dll.""")
+            diambil berdasarkan berat produknya. Hal ini bisa dijadikan pertimbangan pengambilan keputusan oleh sebuah perusahaan, misalnya kendaraan apa yang
+            harus banyak dimiliki perusahaan untuk pengantaran paket produk, penambahan fitur klasifikasi berat produk di aplikasi e-commerce, 
+            dll.""")
         
     #Deskripsi Anggota yang mengerjakan bagian ini
     st.write('<hr>', unsafe_allow_html=True)
@@ -236,15 +236,141 @@ def reviews_order(df_data_reviews):
     st.write('<hr>', unsafe_allow_html=True)
     st.caption("10122250 - Silvia Meida")
     
+#Pengerjaan Jihan Salsabila
+def distribusi_produk(df_seller):
+    #Cek apakah ada missing value atau tidak
+    df_seller_null = df_seller.isnull().values.any()
+    
+    #Cek apakah ada data duplikat atau tidak
+    df_seller_duplicate = df_seller.duplicated().values.any()
+
+    # Menampilkan judul
+    st.title('Analisis Distribusi Kota Penjual')
+
+    # Menghitung jumlah penjual di setiap kota
+    city_counts = df_seller['seller_city'].value_counts()
+
+    # Menghitung jumlah penjual di setiap kota
+    city_counts = df_seller['seller_state'].value_counts()
+
+    # Menampilkan data distribusi kota penjual paling banyak
+    most_common_city = city_counts.idxmax()
+    most_common_city_count = city_counts.max()
+
+    st.subheader('Kota penjual paling banyak:')
+    st.write(f"Nama Kota: {most_common_city}")
+    st.write(f"Jumlah Penjual: {most_common_city_count}")
+
+    # Mengambil 5 kota terbanyak
+    top5_cities = city_counts.head()
+
+    # Menampilkan tabel 5 kota terbanyak
+    st.title('Top 5 Kota Penjual Paling Banyak')
+    top5_cities_table = pd.DataFrame({
+        'Kota': top5_cities.index,
+        'Jumlah Penjual': top5_cities.values})
+    st.table(top5_cities_table)
+
+    # Menampilkan data distribusi kota penjual paling sedikit
+    least_common_city = city_counts.idxmin()
+    least_common_city_count = city_counts.min()
+
+    st.subheader('Kota penjual paling sedikit:')
+    st.write(f"Nama Kota: {least_common_city}")
+    st.write(f"Jumlah Penjual: {least_common_city_count}")
+
+    # Mengambil 5 kota ter sedikit
+    bottom5_cities = city_counts.tail()
+
+    # Menampilkan tabel 5 kota ter sedikit
+    st.title('5 Kota Penjual Paling Sedikit')
+    bottom5_cities_table = pd.DataFrame({
+        'Kota': bottom5_cities.index,
+        'Jumlah Penjual': bottom5_cities.values})
+    st.table(bottom5_cities_table)
 
 
+    # Menampilkan data distribusi kota penjual dalam bentuk diagram batang
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(city_counts.index, city_counts.values, color='skyblue', edgecolor='black')
+    ax.set_title('Distribusi Kota Penjual')
+    ax.set_xlabel('Kota Penjual')
+    ax.set_ylabel('Jumlah Penjual')
+    ax.set_xticks(ax.get_xticks())
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
+    st.pyplot(fig)
+
+    
+    
+    with st.expander("Conclusion dari pertanyaan 4") :
+        st.write(
+            """
+            - Conclution pertanyaan 4 \n
+            Berdasarkan diagram batang diatas dapat disimpulkan bahwa terdapat pendistribusian kepada 23 kota, dimana Kota dengan pendistribusian penjual paling banyak berada di kota Sao paulo dengan 
+            Jumlah penjual diSsao paul sebanyak  69 orang dan jumlah pendistribusian kota paling sedikit berada di kota Taio dengan jumlah penjual sebanyak 1 orang.
+            """
+        )
+
+        #Deskripsi Anggota yang mengerjakan bagian ini
+        st.write('<hr>', unsafe_allow_html=True)
+        st.caption("10122248 - Jihan Salsabila")
+
+#Pengerjaan Rijal
+def banyak_transaksi(df_transaksi) :
+    #Gathering data
+    df_data_customers = pd.read_csv('customers_dataset.csv')
+
+    #Cek apa ada data duplikat
+    df_data_customers_duplicate = df_data_customers.duplicated().values.any()
+    print('ada data duplikat di data customers = ', df_data_customers_duplicate)
+
+    #customers_dataset
+    df_data_negara = df_data_customers['customer_state'].value_counts()
+
+    #membuat fungction Tabel
+
+    #membuat header
+    st.header("Tabel")
+    
+    #mengambil data , sekaligus mengelompokannya
+    df_data_negara = df_data_customers['customer_state'].value_counts()
+    st.table(df_data_negara)
+
+    #membuat mpenjelasan untuk tabel
+    with st.expander("Lihat Penjelasan"):
+        st.write(
+        """
+        Dalam tabel ini, pengelompokan dilakukan dengan cara menghitung setiap negara yang disebutkan saat terjadinya transaksi,dan negara yang disebut dihitung sebagai 1. Hal ini menghasilkan tampilan tabel ini.    
+        """
+        )
+
+        #membuat fungction Grafik transaksi
+
+        #membuat header
+    st.header("Grafik dengan transaksi terbanyak")
+
+    #membuat grafik batang
+    chart_data = pd.DataFrame(df_data_negara.values, columns=["a"], index=df_data_negara.index)
+    st.bar_chart(chart_data)
+    
+    #membuat mpenjelasan untuk grafik batang
+    with st.expander("Lihat Penjelasan"):
+        st.write(
+        """
+        Dari gambar grafik di atas, terlihat bahwa negara bagian dengan jumlah transaksi terbanyak adalah SP.    
+        """
+    )          
+    
 
 #File CSV yang dibutuhkan
 df_data_produk = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/products_dataset.csv")
 df_data_order = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/orders_dataset.csv")
 df_data_reviews = load_data('https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/order_reviews_dataset.csv')
+df_seller = load_data('https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/sellers_dataset.csv')
+df_transaksi = load_data("https://raw.githubusercontent.com/MAndrataZ/UASPDSD_Matplotlib/main/customers_dataset.csv")
 
-#Pemanggilan
+
+#Tampilan
 with st.sidebar :
     selected = option_menu('Menu',['Dashboard','About'],
     icons =["easel2", "info-circle"],
@@ -253,14 +379,19 @@ with st.sidebar :
     
 if (selected == 'Dashboard') :
     st.header(f"Dashboard Analisis E-Commerce")
-    tab1,tab2,tab3 = st.tabs(["Pengkategorian Berat Produk", "Analisis Waktu Pengriman", "Analisis Rating Konsumen"])
+    tab1,tab2,tab3,tab4,tab5 = st.tabs(["Pengkategorian Berat Produk", "Analisis Waktu Pengriman", "Analisis Rating Konsumen","Analisis Pendistribusian Berdasarkan Kota","Analisis Banyaknya Transaksi"])
 
     with tab1 :
         analisis_berat_produk(df_data_produk)
     with tab2 :
         lama_pengiriman(df_data_order)
     with tab3 :
-          reviews_order(df_data_reviews)
+        reviews_order(df_data_reviews)
+    with tab4 :
+        distribusi_produk(df_seller)
+    with tab5 :
+        banyak_transaksi(df_transaksi)
+
 
 else :
     if (selected == 'About') :
@@ -283,6 +414,18 @@ else :
         st.write("NAMA   : Silvia Meida")
         st.write("KELAS  : IF-7")
         st.write("BAGIAN PENGERJAAN : Analisis Rating Konsumen")
+
+        st.write('<hr>', unsafe_allow_html=True)
+        st.write("NIM    : 10122248")
+        st.write("NAMA   : Jihan Salsabila")
+        st.write("KELAS  : IF-7")
+        st.write("BAGIAN PENGERJAAN : Analisis Pendistribusian Berdasarkan Kota")
+
+        st.write('<hr>', unsafe_allow_html=True)
+        st.write("NIM    : 10122236")
+        st.write("NAMA   : M Rijal Fadilah")
+        st.write("KELAS  : IF-7")
+        st.write("BAGIAN PENGERJAAN : Analisis Banyak Transaksi")
 
         st.write('<hr>', unsafe_allow_html=True)
         st.caption("UAS Pemrograman Dasar Sains Data")
