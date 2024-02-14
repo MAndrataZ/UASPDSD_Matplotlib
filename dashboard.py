@@ -311,9 +311,9 @@ def distribusi_produk(df_seller):
             """
         )
 
-        #Deskripsi Anggota yang mengerjakan bagian ini
-        st.write('<hr>', unsafe_allow_html=True)
-        st.caption("10122248 - Jihan Salsabila")
+    #Deskripsi Anggota yang mengerjakan bagian ini
+    st.write('<hr>', unsafe_allow_html=True)
+    st.caption("10122248 - Jihan Salsabila")
 
 #Pengerjaan Rijal
 def banyak_transaksi(df_transaksi) :
@@ -359,7 +359,11 @@ def banyak_transaksi(df_transaksi) :
         """
         Dari gambar grafik di atas, terlihat bahwa negara bagian dengan jumlah transaksi terbanyak adalah SP.    
         """
-    )          
+    )    
+
+    #Deskripsi Anggota yang mengerjakan bagian ini
+    st.write('<hr>', unsafe_allow_html=True)
+    st.caption("10122237 - M Rijal F")      
     
 #Pengerjaan Efelien Anindya
 def metode_payment(df_data_payments):
@@ -436,6 +440,10 @@ def metode_payment(df_data_payments):
     #Kesimpulan
     st.subheader('Conclusion')
     st.write('Dapat disimpulkan bahwa metode transaksi yang paling banyak digunakan yaitu credit card dengan jumlah 76.795 transaksi. Lalu dengan dilakukan pendistribusian value transaksi bisa diketahui bahwa sebagian besar konsumen melakukan transaksi sampai range sebesar 4000. Hal ini dapat membantu sebuah perusahaan dalam menyediakan beberapa jenis credit card untuk transaksi, dan juga setelah mengetahui pendistribusian value transaksi perusahaan bisa meningkatkan value transaksi seperti mengadakan voucher dengan minimum pembayaran.')
+
+    #Deskripsi Anggota yang mengerjakan bagian ini
+    st.write('<hr>', unsafe_allow_html=True)
+    st.caption("10122249 - Efelien Anindya Shifani")
     
 
 #File CSV yang dibutuhkan
